@@ -7,7 +7,7 @@ const storySchema:Schema = new mongoose.Schema({
     content:{
         type: String
     },
-    likes:{
+    interestedUsers:{
         type: [String]
     },
     // comment:{
@@ -16,7 +16,7 @@ const storySchema:Schema = new mongoose.Schema({
     //     autopopulate: true
     // },
     creator:{
-        type: [mongoose.Schema.Types.ObjectId],
+        type: mongoose.Schema.Types.ObjectId,
         ref:'User',
         autopopulate: true
     },

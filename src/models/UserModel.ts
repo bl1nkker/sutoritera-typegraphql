@@ -11,9 +11,7 @@ const userSchema:Schema = new mongoose.Schema({
         type: [String]
     },
     createdStories:{
-        type: [mongoose.Schema.Types.ObjectId],
-        ref:'Story',
-        autopopulate: true
+        type: [mongoose.Schema.Types.ObjectId]
     },
     interestingStories:{
         type: [mongoose.Schema.Types.ObjectId],
