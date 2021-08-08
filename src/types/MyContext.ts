@@ -3,9 +3,9 @@ import { Request, Response } from 'express'
 export interface MyContext {
     req: Request & {
       session: {
-        userId?: 123;
+        userId: string;
+        isAuth: boolean;
       };
     };
     res: Response;
-    someData: 'Some data'
   }

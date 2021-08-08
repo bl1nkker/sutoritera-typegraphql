@@ -2,8 +2,16 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
 type User{
-    id: ID!
-    name: String
+    id: ID
+    email: String,
+    password: String,
+    name: String,
+    avatar: String,
+    friendsList:[ID!],
+    createdStories:[ID!],
+    interestingStories:[ID!],
+    lastOnline: String,
+    token: String
 }
 type Story{
     id: ID
@@ -19,22 +27,37 @@ input StoryInput{
     content: String
 }
 
-type OperationMessage{
+input UserInput{
+    email: String,
+    password: String,
+    name: String,
+    avatar: String
+}
+
+type StoryOperationMessage{
     isSuccess: Boolean,
     message: String,
     result: Story
 }
+type UserOperationMessage{
+    isSuccess: Boolean,
+    message: String,
+    result: User
+}
 
 type Query {
-    hello: String,
     getStories: [Story],
-    getCreatedStories: [Story]
+    getCreatedStories: [Story],
+    getUsers:[User]
+    signInUser(email:String, password:String): UserOperationMessage
 }
 type Mutation{
-    createStory(storyInput: StoryInput!): OperationMessage
-    deleteStory(storyId: ID!): OperationMessage
-    updateStory(storyInput: StoryInput!, storyId: ID!): OperationMessage
-    interestedInStory(storyId: ID!): OperationMessage
-    unInterestedInStory(storyId: ID!): OperationMessage
+    createStory(storyInput: StoryInput!): StoryOperationMessage
+    deleteStory(storyId: ID!): StoryOperationMessage
+    updateStory(storyInput: StoryInput!, storyId: ID!): StoryOperationMessage
+    interestedInStory(storyId: ID!): StoryOperationMessage
+    unInterestedInStory(storyId: ID!): StoryOperationMessage
+
+    signUpUser(userInput:UserInput!): UserOperationMessage
 }
 `;

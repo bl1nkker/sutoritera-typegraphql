@@ -1,16 +1,20 @@
 import { createStory, deleteStory, getStories, interestedInStory, unInterestedInStory, updateStory } from './resolvers/storyResolver'
-import { getCreatedStories } from './resolvers/userResolvers'
+import { getCreatedStories, getUsers, signInUser, signUpUser } from './resolvers/userResolvers'
 import { MyContext } from './types/MyContext'
 
 export const resolvers = {
     Query: {
-      hello: () => "helo",
       getStories: getStories,
 
       // User resolver
-      getCreatedStories: getCreatedStories
+      getUsers:getUsers,
+      getCreatedStories: getCreatedStories,
+      signInUser: (_:any, args:any) => signInUser(args),
     },
     Mutation:{
+        // User resolver
+        signUpUser: (_:any, args:any) => signUpUser(args),
+
         // Story resolver
         // (parent, args, context, info)
         createStory: (_:any, args:any, ctx:MyContext) => createStory(ctx, args),
