@@ -6,7 +6,7 @@ type User{
     name: String
 }
 type Story{
-    id: ID!
+    id: ID
     title: String,
     content: String,
     interestedUsers:[ID!],
@@ -34,5 +34,7 @@ type Mutation{
     createStory(storyInput: StoryInput!): OperationMessage
     deleteStory(storyId: ID!): OperationMessage
     updateStory(storyInput: StoryInput!, storyId: ID!): OperationMessage
+    interestedInStory(storyId: ID!): OperationMessage
+    unInterestedInStory(storyId: ID!): OperationMessage
 }
 `;
