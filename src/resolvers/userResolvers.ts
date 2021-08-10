@@ -2,6 +2,7 @@ import { StoryModel } from './../models/StoryModel'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { UserModel } from './../models/UserModel'
+import { MyContext } from 'src/types/MyContext'
 
 type UserType = {
     id: string,
@@ -61,11 +62,51 @@ export const signInUser = async(args:any) =>{
     }
 }
 
-// export const addFriendToFriendsList = async(ctx:MyContext, args:any) =>{
-//     if (!ctx){
+export const addUserToFriendsList = async(ctx:MyContext, args:any) =>{
+    if (!ctx.req.session?.isAuth){
+        return { isSuccess: false, message: 'Not authenticated', result:null }
+    }
+    try {
+        const { friendId } = args
+        const { userId } = ctx.req.session
+        const currentUser:UserType = await UserModel.findById(userId)
+        const friendUser:UserType = await UserModel.findById(friendId)
+        if (currentUser && friendUser){
+            if (currentUser.friendsList.indexOf(friendId) !== -1) return { isSuccess: false, message: `${friendUser.name} is already in friends list`, result: null }
+    
+            currentUser.friendsList.push(friendId)
+            const result = await UserModel.findByIdAndUpdate(userId, {...currentUser}, { new:true })
+            return { isSuccess: true, message: 'Success', result: result}
+        }
+        return { isSuccess: false, message: 'User not found', result: null }
+    } catch (error) {
+        console.log(error)
+        return { isSuccess: false, message:error, result:null }
+    }
+} 
 
-//     }
-// }
+export const removeUserFromFriendsList = async(ctx:MyContext, args:any) =>{
+    if (!ctx.req.session?.isAuth){
+        return { isSuccess: false, message: 'Not authenticated', result:null }
+    }
+    try {
+        const { friendId } = args
+        const { userId } = ctx.req.session
+        const currentUser:UserType = await UserModel.findById(userId)
+        const friendUser:UserType = await UserModel.findById(friendId)
+        if (currentUser && friendUser){
+            if (currentUser.friendsList.indexOf(friendId) === -1) return { isSuccess: false, message: `${friendUser.name} is not in friends list`, result: null }    
+            currentUser.friendsList = currentUser.friendsList.filter( _id => _id !== friendId )
+            const result = await UserModel.findByIdAndUpdate(userId, {...currentUser}, { new:true })
+            return { isSuccess: true, message: 'Success', result: result }
+        }
+        return { isSuccess: false, message: 'User not found', result: null }
+    } catch (error) {
+        console.log(error)
+        return { isSuccess: false, message:error, result:null }
+    }
+} 
+
 
 export const getCreatedStories = async() =>{
     // Get created ID

@@ -1,5 +1,5 @@
 import { createStory, deleteStory, getStories, interestedInStory, unInterestedInStory, updateStory } from './resolvers/storyResolver'
-import { getCreatedStories, getUsers, signInUser, signUpUser } from './resolvers/userResolvers'
+import { addUserToFriendsList, getCreatedStories, getUsers, removeUserFromFriendsList, signInUser, signUpUser } from './resolvers/userResolvers'
 import { MyContext } from './types/MyContext'
 
 export const resolvers = {
@@ -14,6 +14,8 @@ export const resolvers = {
     Mutation:{
         // User resolver
         signUpUser: (_:any, args:any) => signUpUser(args),
+        addUserToFriendsList: (_:any, args:any, ctx:MyContext) => addUserToFriendsList(ctx, args),
+        removeUserFromFriendsList: (_:any, args:any, ctx:MyContext) => removeUserFromFriendsList(ctx, args),
 
         // Story resolver
         // (parent, args, context, info)

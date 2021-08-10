@@ -59,5 +59,7 @@ type Mutation{
     unInterestedInStory(storyId: ID!): StoryOperationMessage
 
     signUpUser(userInput:UserInput!): UserOperationMessage
+    addUserToFriendsList(friendId: ID!):UserOperationMessage
+    removeUserFromFriendsList(friendId: ID!):UserOperationMessage
 }
 `;
