@@ -108,7 +108,8 @@ export const removeUserFromFriendsList = async(ctx:MyContext, args:any) =>{
 } 
 
 
-export const getCreatedStories = async() =>{
+export const getCreatedStories = async(ctx:MyContext) =>{
     // Get created ID
-    return StoryModel.find({ creator: "536f6d652075736572204944" })
+    const { userId } = ctx.req.session
+    return StoryModel.find({ creator: userId })
 }
