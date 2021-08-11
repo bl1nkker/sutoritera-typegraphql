@@ -11,7 +11,8 @@ interface Options {
     source: string,
     variableValues?:Maybe<{[key: string]: any;}>,
     userId?: number,
-    isAuth?: boolean
+    isAuth?: boolean,
+    token?: string
 }
 
 export const graphqlTestCall = async({ source, variableValues, userId, isAuth }:Options) =>{
