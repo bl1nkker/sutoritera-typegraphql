@@ -11,6 +11,7 @@ type User{
     createdStories:[ID!],
     interestingStories:[ID!],
     lastOnline: String,
+    isOnline: Boolean,
     token: String
 }
 type Story{
