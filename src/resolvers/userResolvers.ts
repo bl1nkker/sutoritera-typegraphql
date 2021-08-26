@@ -17,9 +17,22 @@ type UserType = {
     token: string
 }
 
+export const getCreatedStories = async(ctx:MyContext) =>{
+    // Get created ID
+    try {
+        const { userId } = ctx.req.session
+        const result = await StoryModel.find({ creator: userId })
+        return { isSuccess: true, message:'Success', result }
+    } catch (error) {
+        console.log(error)
+        return { isSuccess: false, message:"Problems encountered during fetching user stories", result:null }
+    }
+}
+
 export const getUsers = async() =>{
     try {
-        return UserModel.find()
+        const result = await UserModel.find()
+        return { isSuccess: true, message:'Success', result }
     } catch (error) {
         console.log(error)
         return { isSuccess: false, message:"Problems encountered during fetching users", result:null }
@@ -108,8 +121,3 @@ export const removeUserFromFriendsList = async(ctx:MyContext, args:any) =>{
 } 
 
 
-export const getCreatedStories = async(ctx:MyContext) =>{
-    // Get created ID
-    const { userId } = ctx.req.session
-    return StoryModel.find({ creator: userId })
-}

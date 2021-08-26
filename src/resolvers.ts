@@ -9,10 +9,10 @@ export const resolvers = {
     // User resolver
     getUsers: getUsers,
     getCreatedStories: (_: any, __: any, ctx: MyContext) => getCreatedStories(ctx),
-    signInUser: (_: any, args: any) => signInUser(args),
   },
   Mutation: {
     // User resolver
+    signInUser: (_: any, args: any) => signInUser(args),
     signUpUser: (_: any, args: any) => signUpUser(args),
     addUserToFriendsList: (_: any, args: any, ctx: MyContext) => addUserToFriendsList(ctx, args),
     removeUserFromFriendsList: (_: any, args: any, ctx: MyContext) => removeUserFromFriendsList(ctx, args),
