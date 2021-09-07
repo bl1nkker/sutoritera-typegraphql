@@ -4,7 +4,7 @@ import { MyContext } from './types/MyContext'
 
 export const resolvers = {
   Query: {
-    getStories: getStories,
+    getStories: (_: any, __: any, ctx: MyContext) => getStories(ctx),
 
     // User resolver
     getUsers: getUsers,
@@ -12,8 +12,8 @@ export const resolvers = {
   },
   Mutation: {
     // User resolver
-    signInUser: (_: any, args: any) => signInUser(args),
-    signUpUser: (_: any, args: any) => signUpUser(args),
+    signInUser: (_: any, args: any, ctx: MyContext) => signInUser(args, ctx),
+    signUpUser: (_: any, args: any, ctx: MyContext) => signUpUser(args, ctx),
     addUserToFriendsList: (_: any, args: any, ctx: MyContext) => addUserToFriendsList(ctx, args),
     removeUserFromFriendsList: (_: any, args: any, ctx: MyContext) => removeUserFromFriendsList(ctx, args),
 

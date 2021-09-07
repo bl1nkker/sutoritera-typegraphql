@@ -10,7 +10,8 @@ type StoryType = {
     createdAt: string
 }
 
-export const getStories = async() =>{
+export const getStories = async(ctx:MyContext) =>{
+    console.log(ctx.req.cookies)
     try {
         const result = await StoryModel.find()
         return { isSuccess: true, message:'Success', result }
