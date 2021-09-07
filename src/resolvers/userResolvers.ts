@@ -39,7 +39,7 @@ export const getUsers = async() =>{
     }
 }
 
-export const signUpUser = async(args:any) =>{
+export const signUpUser = async(args:any, ctx:MyContext) =>{
     const userCredentials = {...args.userInput}
     try {
         const existingUser:UserType = await UserModel.findOne({ email:userCredentials.email })
@@ -49,7 +49,11 @@ export const signUpUser = async(args:any) =>{
         const newUser = new UserModel({ ...userCredentials, password:hashedPassword })
         const result = await newUser.save()
         const token = jwt.sign({ userId:newUser._id, email:newUser.email }, 'sutoritera', { expiresIn: '7d' })
-        result.token = token
+        ctx.res.cookie("id", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'production',
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        })
         return { isSuccess: true, message:'Success', result:result }
     } catch (error) {
         console.log(error)
@@ -57,7 +61,7 @@ export const signUpUser = async(args:any) =>{
     }
 } 
 
-export const signInUser = async(args:any) =>{
+export const signInUser = async(args:any, ctx:MyContext) =>{
     try {
         const { email, password } = args
         const existingUser:UserType = await UserModel.findOne({ email:email })
@@ -67,7 +71,11 @@ export const signInUser = async(args:any) =>{
         if (!passwordIsCorrect) return { isSuccess: false, message:'Password do not match!', result: null }
 
         const token = jwt.sign({ userId:existingUser.id, email:existingUser.email }, 'sutoritera', { expiresIn: '7d' })
-        existingUser.token = token
+        ctx.res.cookie("id", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'production',
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        })
         return { isSuccess: true, message:'Success', result:existingUser }
     } catch (error) {
         console.log(error)

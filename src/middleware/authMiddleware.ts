@@ -4,6 +4,8 @@ export const authMiddleware = async(req:any, _:any, next:any) => {
     try {
         // Here we get the token, from current user
         const token = req.headers?.authorization?.split(" ")[1]
+        console.log('Request')
+        console.log(req)
         // let decodedData
         // If token is created by our server
         if (token) {
