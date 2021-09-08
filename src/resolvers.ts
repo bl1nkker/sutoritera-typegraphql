@@ -4,7 +4,7 @@ import { MyContext } from './types/MyContext'
 
 export const resolvers = {
   Query: {
-    getStories: (_: any, __: any, ctx: MyContext) => getStories(ctx),
+    getStories: getStories,
 
     // User resolver
     getUsers: getUsers,

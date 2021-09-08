@@ -3,10 +3,7 @@ import jwt from 'jsonwebtoken'
 export const authMiddleware = async(req:any, _:any, next:any) => {
     try {
         // Here we get the token, from current user
-        const token = req.headers?.authorization?.split(" ")[1]
-        console.log('Request')
-        console.log(req)
-        // let decodedData
+        const { token } = req.cookies
         // If token is created by our server
         if (token) {
             const decodedData:any = jwt.verify( token, 'sutoritera' )
@@ -14,6 +11,8 @@ export const authMiddleware = async(req:any, _:any, next:any) => {
                 userId: decodedData?.userId,
                 isAuth: true
             }
+            console.log("token")
+            console.log(decodedData?.userId)
         }
         next()
     } catch (error) {
