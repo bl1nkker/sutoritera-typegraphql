@@ -49,7 +49,7 @@ export const signUpUser = async(args:any, ctx:MyContext) =>{
         const newUser = new UserModel({ ...userCredentials, password:hashedPassword })
         const result = await newUser.save()
         const token = jwt.sign({ userId:newUser._id, email:newUser.email }, 'sutoritera', { expiresIn: '7d' })
-        ctx.res.cookie("id", token, {
+        ctx.res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'production',
             maxAge: 1000 * 60 * 60 * 24 * 7
@@ -71,7 +71,7 @@ export const signInUser = async(args:any, ctx:MyContext) =>{
         if (!passwordIsCorrect) return { isSuccess: false, message:'Password do not match!', result: null }
 
         const token = jwt.sign({ userId:existingUser.id, email:existingUser.email }, 'sutoritera', { expiresIn: '7d' })
-        ctx.res.cookie("id", token, {
+        ctx.res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'production',
             maxAge: 1000 * 60 * 60 * 24 * 7
