@@ -76,6 +76,11 @@ export const signInUser = async(args:any, ctx:MyContext) =>{
             secure: process.env.NODE_ENV !== 'production',
             maxAge: 1000 * 60 * 60 * 24 * 7
         })
+        ctx.res.cookie("uid", existingUser.id, {
+            httpOnly: false,
+            secure: process.env.NODE_ENV !== 'production',
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        })
         return { isSuccess: true, message:'Success', result:existingUser }
     } catch (error) {
         console.log(error)
