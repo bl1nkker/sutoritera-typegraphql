@@ -11,8 +11,6 @@ export const authMiddleware = async(req:any, _:any, next:any) => {
                 userId: decodedData?.userId,
                 isAuth: true
             }
-            console.log("token")
-            console.log(decodedData?.userId)
         }
         next()
     } catch (error) {
