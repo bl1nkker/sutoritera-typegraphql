@@ -12,7 +12,8 @@ type StoryType = {
 
 export const getStories = async() =>{
     try {
-        return StoryModel.find()
+        const stories = await StoryModel.find()
+        return { isSuccess: false, message:"Success", result:stories }
     } catch (error) {
         console.log(error)
         return { isSuccess: false, message:error, result:null }

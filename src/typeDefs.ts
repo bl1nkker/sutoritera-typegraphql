@@ -39,16 +39,26 @@ type StoryOperationMessage{
     message: String,
     result: Story
 }
+type StoriesOperationMessage{
+    isSuccess: Boolean,
+    message: String,
+    result: [Story]
+}
 type UserOperationMessage{
     isSuccess: Boolean,
     message: String,
     result: User
 }
+type UsersOperationMessage{
+    isSuccess: Boolean,
+    message: String,
+    result: [User]
+}
 
 type Query {
-    getStories: [Story],
-    getCreatedStories: [Story],
-    getUsers:[User]
+    getStories: StoriesOperationMessage,
+    getCreatedStories: StoriesOperationMessage,
+    getUsers:UsersOperationMessage
     signInUser(email:String, password:String): UserOperationMessage
 }
 type Mutation{

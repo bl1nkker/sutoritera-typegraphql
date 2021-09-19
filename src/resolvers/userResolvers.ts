@@ -19,7 +19,8 @@ type UserType = {
 
 export const getUsers = async() =>{
     try {
-        return UserModel.find()
+        const users = await UserModel.find()
+        return { isSuccess: false, message:"Success", result:users }
     } catch (error) {
         console.log(error)
         return { isSuccess: false, message:"Problems encountered during fetching users", result:null }
