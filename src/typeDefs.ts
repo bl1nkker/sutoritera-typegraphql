@@ -11,6 +11,7 @@ type User{
     createdStories:[ID!],
     interestingStories:[ID!],
     lastOnline: String,
+    isOnline: Boolean,
     token: String
 }
 type Story{
@@ -34,32 +35,31 @@ input UserInput{
     avatar: String
 }
 
+type StoriesListOperationMessage{
+    isSuccess: Boolean,
+    message: String,
+    result: [Story!]
+}
+type UsersListOperationMessage{
+    isSuccess: Boolean,
+    message: String,
+    result: [User!]
+}
+
 type StoryOperationMessage{
     isSuccess: Boolean,
     message: String,
     result: Story
-}
-type StoriesOperationMessage{
-    isSuccess: Boolean,
-    message: String,
-    result: [Story]
 }
 type UserOperationMessage{
     isSuccess: Boolean,
     message: String,
     result: User
 }
-type UsersOperationMessage{
-    isSuccess: Boolean,
-    message: String,
-    result: [User]
-}
-
 type Query {
-    getStories: StoriesOperationMessage,
-    getCreatedStories: StoriesOperationMessage,
-    getUsers:UsersOperationMessage
-    signInUser(email:String, password:String): UserOperationMessage
+    getStories:StoriesListOperationMessage,
+    getCreatedStories: StoriesListOperationMessage,
+    getUsers:UsersListOperationMessage
 }
 type Mutation{
     createStory(storyInput: StoryInput!): StoryOperationMessage
@@ -68,6 +68,7 @@ type Mutation{
     interestedInStory(storyId: ID!): StoryOperationMessage
     unInterestedInStory(storyId: ID!): StoryOperationMessage
 
+    signInUser(email:String, password:String): UserOperationMessage
     signUpUser(userInput:UserInput!): UserOperationMessage
     addUserToFriendsList(friendId: ID!):UserOperationMessage
     removeUserFromFriendsList(friendId: ID!):UserOperationMessage

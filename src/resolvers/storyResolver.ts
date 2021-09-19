@@ -11,9 +11,10 @@ type StoryType = {
 }
 
 export const getStories = async() =>{
+    // console.log(ctx.req.cookies)
     try {
-        const stories = await StoryModel.find()
-        return { isSuccess: false, message:"Success", result:stories }
+        const result = await StoryModel.find()
+        return { isSuccess: true, message:'Success', result }
     } catch (error) {
         console.log(error)
         return { isSuccess: false, message:error, result:null }

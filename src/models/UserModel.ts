@@ -27,7 +27,10 @@ const userSchema:Schema = new mongoose.Schema({
         autopopulate: true
     },
     lastOnline:{
-        type: Date
+        type: String
+    },
+    isOnline:{
+        type: Boolean
     },
     // comments:{
     //     type: [mongoose.Schema.Types.ObjectId],

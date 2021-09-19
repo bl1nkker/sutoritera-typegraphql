@@ -17,17 +17,29 @@ type UserType = {
     token: string
 }
 
+export const getCreatedStories = async(ctx:MyContext) =>{
+    // Get created ID
+    try {
+        const { userId } = ctx.req.session
+        const result = await StoryModel.find({ creator: userId })
+        return { isSuccess: true, message:'Success', result }
+    } catch (error) {
+        console.log(error)
+        return { isSuccess: false, message:"Problems encountered during fetching user stories", result:null }
+    }
+}
+
 export const getUsers = async() =>{
     try {
-        const users = await UserModel.find()
-        return { isSuccess: false, message:"Success", result:users }
+        const result = await UserModel.find()
+        return { isSuccess: true, message:'Success', result }
     } catch (error) {
         console.log(error)
         return { isSuccess: false, message:"Problems encountered during fetching users", result:null }
     }
 }
 
-export const signUpUser = async(args:any) =>{
+export const signUpUser = async(args:any, ctx:MyContext) =>{
     const userCredentials = {...args.userInput}
     try {
         const existingUser:UserType = await UserModel.findOne({ email:userCredentials.email })
@@ -37,7 +49,11 @@ export const signUpUser = async(args:any) =>{
         const newUser = new UserModel({ ...userCredentials, password:hashedPassword })
         const result = await newUser.save()
         const token = jwt.sign({ userId:newUser._id, email:newUser.email }, 'sutoritera', { expiresIn: '7d' })
-        result.token = token
+        ctx.res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'production',
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        })
         return { isSuccess: true, message:'Success', result:result }
     } catch (error) {
         console.log(error)
@@ -45,7 +61,7 @@ export const signUpUser = async(args:any) =>{
     }
 } 
 
-export const signInUser = async(args:any) =>{
+export const signInUser = async(args:any, ctx:MyContext) =>{
     try {
         const { email, password } = args
         const existingUser:UserType = await UserModel.findOne({ email:email })
@@ -55,7 +71,16 @@ export const signInUser = async(args:any) =>{
         if (!passwordIsCorrect) return { isSuccess: false, message:'Password do not match!', result: null }
 
         const token = jwt.sign({ userId:existingUser.id, email:existingUser.email }, 'sutoritera', { expiresIn: '7d' })
-        existingUser.token = token
+        ctx.res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'production',
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        })
+        ctx.res.cookie("uid", existingUser.id, {
+            httpOnly: false,
+            secure: process.env.NODE_ENV !== 'production',
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        })
         return { isSuccess: true, message:'Success', result:existingUser }
     } catch (error) {
         console.log(error)
@@ -109,8 +134,3 @@ export const removeUserFromFriendsList = async(ctx:MyContext, args:any) =>{
 } 
 
 
-export const getCreatedStories = async(ctx:MyContext) =>{
-    // Get created ID
-    const { userId } = ctx.req.session
-    return StoryModel.find({ creator: userId })
-}
